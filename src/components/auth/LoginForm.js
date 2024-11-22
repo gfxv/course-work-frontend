@@ -9,9 +9,12 @@ const LoginForm = () => {
   const { login } = useContext(AuthContext);
 
   const handleLogin = () => {
+    // TODO: replace with real logic
     const token = 'fake-token';
     const role = 'user';
-    login(token, role);
+    const name = 'John Doe';
+    const balance = 1000.00;
+    login(token, role, name, balance);
     navigate('/');
   };
 

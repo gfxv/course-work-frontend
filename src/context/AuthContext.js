@@ -7,6 +7,8 @@ const AuthProvider = ({ children }) => {
     isAuthenticated: false,
     token: null,
     role: null,
+    name: null,
+    balance: null,
   });
 
   useEffect(() => {
@@ -17,13 +19,13 @@ const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  const login = (token, role) => {
-    setAuthState({ isAuthenticated: true, token, role });
-    localStorage.setItem('auth', JSON.stringify({ isAuthenticated: true, token, role }));
+  const login = (token, role, name, balance) => {
+    setAuthState({ isAuthenticated: true, token, role, name, balance });
+    localStorage.setItem('auth', JSON.stringify({ isAuthenticated: true, token, role, name, balance }));
   };
 
   const logout = () => {
-    setAuthState({ isAuthenticated: false, token: null, role: null });
+    setAuthState({ isAuthenticated: false, token: null, role: null, name: null, balance: null });
     localStorage.removeItem('auth');
   };
 
