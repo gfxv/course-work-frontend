@@ -7,21 +7,20 @@ import LobbyList from "../components/LobbyList";
 import ActionButtons from "../components/ActionButtons";
 import JoinByIdModal from "../components/JoinByIdModal";
 import LobbyDetailModal from "../components/LobbyDetailModal";
+import CreateLobbyModal from "../components/CreateLobbyModal";
 
 const Home = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [lobbies, setLobbies] = useState([
     { id: 1, name: "Lobby 1", uniqueId: "abc123", visibility: "public" },
-    { id: 2, name: "Lobby 2", uniqueId: "def456", visibility: "public" },
-    { id: 3, name: "Lobby 3", uniqueId: "ghi789", visibility: "public" },
-    { id: 4, name: "Lobby 4", uniqueId: "abc123", visibility: "friends-only" },
-    { id: 5, name: "Lobby 5", uniqueId: "def456", visibility: "friends-only" },
-    { id: 6, name: "Lobby 6", uniqueId: "ghi789", visibility: "private" },
+    { id: 2, name: "Lobby 2", uniqueId: "def456", visibility: "friends-only" },
+    { id: 3, name: "Lobby 3", uniqueId: "ghi789", visibility: "private" },
   ]);
   const [filteredLobbies, setFilteredLobbies] = useState(lobbies);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedLobby, setSelectedLobby] = useState(null);
   const [visibilityFilter, setVisibilityFilter] = useState("all");
+  const [isCreateLobbyModalOpen, setIsCreateLobbyModalOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleSearch = (e) => {
@@ -52,18 +51,20 @@ const Home = () => {
     setFilteredLobbies(filtered);
   };
 
-  const handleCreateLobby = () => {
-    // Logic to create a new lobby
-    navigate("/create-lobby");
+  const handleCreateLobby = (newLobby) => {
+    const uniqueId = `lobby-${lobbies.length + 1}`;
+    const createdLobby = { ...newLobby, uniqueId };
+    setLobbies([...lobbies, createdLobby]);
+    setFilteredLobbies(lobbies)
+    setIsCreateLobbyModalOpen(false);
+    navigate(`/lobby/${uniqueId}`);
   };
 
   const handleJoinLobby = (uniqueId) => {
-    // Logic to join a lobby by unique ID
     navigate(`/lobby/${uniqueId}`);
   };
 
   const handleJoinById = (uniqueId) => {
-    // Logic to join a lobby by unique ID
     navigate(`/lobby/${uniqueId}`);
     setIsModalOpen(false);
   };
@@ -82,26 +83,34 @@ const Home = () => {
     setIsModalOpen(true);
   };
 
+  const openCreateLobbyModal = () => {
+    setIsCreateLobbyModalOpen(true);
+  };
+
+  const closeCreateLobbyModal = () => {
+    setIsCreateLobbyModalOpen(false);
+  };
+
   return (
     <>
       <Header />
       <div className="min-h-screen bg-gray-100 p-4">
         <h1 className="text-3xl font-bold mb-4">Available Lobbies</h1>
         <div className="flex justify-between items-center mb-4">
-          <div>
+          <div className="flex items-center">
             <SearchBar searchTerm={searchTerm} onSearch={handleSearch} />
             <select
               value={visibilityFilter}
               onChange={handleVisibilityFilterChange}
-              className="border p-2 mb-4 w-fit ml-2 bg-white rounded shadow-sm focus:outline-none"
+              className="border p-2 w-fit ml-2 bg-white rounded shadow-sm focus:outline-none"
             >
               <option value="all">All Lobbies</option>
-              <option value="public">Public</option>
-              <option value="friends-only">Friends-Only</option>
+              <option value="public">Public Lobbies</option>
+              <option value="friends-only">Friends-Only Lobbies</option>
             </select>
           </div>
           <ActionButtons
-            onCreateLobby={handleCreateLobby}
+            onCreateLobby={openCreateLobbyModal}
             onOpenModal={openModal}
           />
         </div>
@@ -119,6 +128,11 @@ const Home = () => {
             onJoin={() => handleJoinLobby(selectedLobby.uniqueId)}
           />
         )}
+        <CreateLobbyModal
+          isOpen={isCreateLobbyModalOpen}
+          onClose={closeCreateLobbyModal}
+          onCreate={handleCreateLobby}
+        />
       </div>
     </>
   );
