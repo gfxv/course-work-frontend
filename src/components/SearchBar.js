@@ -7,7 +7,7 @@ const SearchBar = ({ searchTerm, onSearch }) => {
       placeholder="Search lobbies..."
       value={searchTerm}
       onChange={onSearch}
-      className="border p-2 w-1/5"
+      className="border p-2 w-1/5 min-w-fit"
     />
   );
 };
