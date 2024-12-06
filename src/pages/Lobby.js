@@ -62,13 +62,13 @@ const Lobby = () => {
 
   return (
     <>
-      <Header/>
+      <Header />
       <div className="min-h-screen bg-gray-100 p-4 flex justify-center">
-        <div className="w-full max-w-4xl mx-auto flex justify-between items-start">
-          <div className="w-full">
+        <div className="w-full max-w-6xl mx-auto flex justify-between items-start">
+          <div className="w-3/4 h-2/3">
             <PokerTable players={players} />
           </div>
-          <div className="ml-4 w-full max-w-xs">
+          <div className="ml-4 w-1/4">
             <LobbyInfo
               lobbyName={lobbyInfo.lobbyName}
               lobbyType={lobbyInfo.lobbyType}
