@@ -28,6 +28,9 @@ const Lobby = () => {
         players: [
           { id: "player1", nickname: "Player 1" },
           { id: "player2", nickname: "Player 2" },
+          { id: "player3", nickname: "Player 3" },
+          { id: "player4", nickname: "Player 4" },
+          { id: "player5", nickname: "Player 5" },
           { id: "owner123", nickname: "Owner" },
         ],
         lobbyName: "Lobby 1",
