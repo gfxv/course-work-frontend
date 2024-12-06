@@ -17,6 +17,7 @@ const Lobby = () => {
     blindSize: "",
     createdAt: "",
   });
+  const [currentUserCards, setCurrentUserCards] = useState([]);
 
   useEffect(() => {
     // Simulate fetching lobby data
@@ -28,9 +29,6 @@ const Lobby = () => {
         players: [
           { id: "player1", nickname: "Player 1" },
           { id: "player2", nickname: "Player 2" },
-          { id: "player3", nickname: "Player 3" },
-          { id: "player4", nickname: "Player 4" },
-          { id: "player5", nickname: "Player 5" },
           { id: "owner123", nickname: "Owner" },
         ],
         lobbyName: "Lobby 1",
@@ -48,6 +46,8 @@ const Lobby = () => {
         blindSize: lobbyData.blindSize,
         createdAt: lobbyData.createdAt,
       });
+      // Simulate setting current user's cards
+      setCurrentUserCards(["A♠", "K♦"]);
     };
 
     fetchLobbyData();
@@ -88,8 +88,18 @@ const Lobby = () => {
       <Header />
       <div className="min-h-screen bg-gray-100 p-4 flex justify-center">
         <div className="w-full max-w-6xl mx-auto flex justify-between items-start">
-          <div className="w-3/4 h-2/3">
+          <div className="w-3/4 h-2/3 relative">
             <PokerTable ref={pokerTableRef} players={players} />
+            <div className="absolute -bottom-36 left-1/2 transform -translate-x-1/2 flex space-x-4 z-10">
+              {currentUserCards.map((card, index) => (
+                <div
+                  key={index}
+                  className="bg-white p-4 rounded shadow w-20 h-32 flex items-center justify-center text-2xl transition-transform duration-300 hover:scale-110"
+                >
+                  {card}
+                </div>
+              ))}
+            </div>
           </div>
           <div className="ml-4 w-1/4">
             <LobbyInfo
@@ -117,6 +127,7 @@ const Lobby = () => {
                 </button>
               )}
             </div>
+            {/* those buttons are temporal */}
             <div className="mt-4 flex space-x-2">
               <button
                 onClick={displayFlop}
