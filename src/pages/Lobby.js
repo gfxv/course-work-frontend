@@ -60,13 +60,33 @@ const Lobby = () => {
     navigate("/");
   };
 
+  const displayFlop = () => {
+    // Simulate displaying the flop
+    const flopCards = ["A♥", "K♦", "Q♣"];
+    pokerTableRef.current.displayFlop(flopCards);
+  };
+
+  const displayTurn = () => {
+    // Simulate displaying the turn
+    const turnCard = "J♠";
+    pokerTableRef.current.displayTurn(turnCard);
+  };
+
+  const displayRiver = () => {
+    // Simulate displaying the river
+    const riverCard = "10♥";
+    pokerTableRef.current.displayRiver(riverCard);
+  };
+
+  const pokerTableRef = React.createRef();
+
   return (
     <>
       <Header />
       <div className="min-h-screen bg-gray-100 p-4 flex justify-center">
         <div className="w-full max-w-6xl mx-auto flex justify-between items-start">
           <div className="w-3/4 h-2/3">
-            <PokerTable players={players} />
+            <PokerTable ref={pokerTableRef} players={players} />
           </div>
           <div className="ml-4 w-1/4">
             <LobbyInfo
@@ -93,6 +113,26 @@ const Lobby = () => {
                   Quit Lobby
                 </button>
               )}
+            </div>
+            <div className="mt-4 flex space-x-2">
+              <button
+                onClick={displayFlop}
+                className="bg-blue-500 text-white p-2 rounded"
+              >
+                Display Flop
+              </button>
+              <button
+                onClick={displayTurn}
+                className="bg-blue-500 text-white p-2 rounded"
+              >
+                Display Turn
+              </button>
+              <button
+                onClick={displayRiver}
+                className="bg-blue-500 text-white p-2 rounded"
+              >
+                Display River
+              </button>
             </div>
           </div>
         </div>
