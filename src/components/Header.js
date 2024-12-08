@@ -52,7 +52,7 @@ const Header = () => {
         {isDropdownOpen && (
           <div className="absolute right-0 mt-2 w-52 bg-white text-gray-800 rounded-md shadow-lg">
             <Link
-              to="/info"
+              to="/account"
               className="flex items-center px-4 py-2 rounded-md hover:bg-gray-200"
             >
               <FontAwesomeIcon icon={faUser} className="mr-2" />
