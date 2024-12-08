@@ -23,57 +23,61 @@ const AccountInfoTab = () => {
   return (
     <div className="flex">
       <div className="w-1/2 pr-4">
-        <h2 className="text-xl font-bold mb-4">Account Information</h2>
-        <div className="mb-4">
-          {isEditing ? (
-            <>
-              <label className="block mb-2">Username</label>
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-bold">Account Information</h2>
+          <button
+            onClick={() => setIsEditing(true)}
+            className="bg-blue-500 text-white px-3 py-1 rounded"
+          >
+            Edit
+          </button>
+        </div>
+        <div className="mb-2">
+          <div className="flex items-center">
+            <label className="w-1/4 mr-2">Username</label>
+            {isEditing ? (
               <input
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="border p-2 w-full"
+                className="border p-1 w-full"
               />
-            </>
-          ) : (
-            <>
-              <strong>Username:</strong> {username}
-            </>
-          )}
+            ) : (
+              <strong>{username}</strong>
+            )}
+          </div>
         </div>
-        <div className="mb-4">
-          {isEditing ? (
-            <>
-              <label className="block mb-2">Email</label>
+        <div className="mb-2">
+          <div className="flex items-center">
+            <label className="w-1/4 mr-2">Email</label>
+            {isEditing ? (
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="border p-2 w-full"
+                className="border p-1 w-full"
               />
-            </>
-          ) : (
-            <>
-              <strong>Email:</strong> {email}
-            </>
-          )}
+            ) : (
+              <strong>{email}</strong>
+            )}
+          </div>
         </div>
-        <div className="mb-4">
-          {isEditing ? (
-            <>
-              <label className="block mb-2">Password</label>
+        <div className="mb-2">
+          <div className="flex items-center">
+            <label className="w-1/4 mr-2">Password</label>
+            {isEditing ? (
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="border p-2 w-full"
+                className="border p-1 w-full"
               />
-            </>
-          ) : (
-            <></>
-          )}
+            ) : (
+              <strong>********</strong>
+            )}
+          </div>
         </div>
-        <div className="mb-4">
+        <div className="mb-2">
           <strong>Game Statistics:</strong>
           <ul>
             <li>Total Games Played: 50</li>
@@ -81,19 +85,12 @@ const AccountInfoTab = () => {
             <li>Losses: 20</li>
           </ul>
         </div>
-        {isEditing ? (
+        {isEditing && (
           <button
             onClick={handleSave}
             className="bg-green-500 text-white p-2 rounded w-full"
           >
             Save
-          </button>
-        ) : (
-          <button
-            onClick={() => setIsEditing(true)}
-            className="bg-blue-500 text-white p-2 rounded w-full"
-          >
-            Edit
           </button>
         )}
       </div>
@@ -124,12 +121,14 @@ const AccountInfoTab = () => {
             placeholder="Enter Bank Card Number"
           />
         </div>
-        <button
-          onClick={handleTopUp}
-          className="bg-green-500 text-white p-2 rounded w-full"
-        >
-          Top Up Balance
-        </button>
+        <div className="w-full flex justify-end">
+          <button
+            onClick={handleTopUp}
+            className="bg-green-500 text-white mt-4 p-2 rounded w-1/3"
+          >
+            Top Up Balance
+          </button>
+        </div>
       </div>
     </div>
   );
