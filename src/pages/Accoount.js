@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Header from '../components/Header';
 import AccountInfoTab from '../components/AccountInfoTab';
+import FriendsListTab from '../components/FriendsListTab';
 
 const Account = () => {
   const [activeTab, setActiveTab] = useState('accountInfo');
@@ -10,7 +11,7 @@ const Account = () => {
       case 'accountInfo':
         return <AccountInfoTab />;
       case 'friendsList':
-        return <div>Friends list here</div>;
+        return <FriendsListTab />;
       case 'history':
         return <div>History here</div>;
       default:
