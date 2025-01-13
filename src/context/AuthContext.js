@@ -6,7 +6,7 @@ const AuthProvider = ({ children }) => {
   const [authState, setAuthState] = useState({
     isAuthenticated: false,
     token: null,
-    role: null,
+    id: null,
     name: null,
     balance: null,
   });
@@ -19,13 +19,13 @@ const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  const login = (token, role, name, balance) => {
-    setAuthState({ isAuthenticated: true, token, role, name, balance });
-    localStorage.setItem('auth', JSON.stringify({ isAuthenticated: true, token, role, name, balance }));
+  const login = (token, id, name, balance) => {
+    setAuthState({ isAuthenticated: true, token, id, name, balance });
+    localStorage.setItem('auth', JSON.stringify({ isAuthenticated: true, token, id, name, balance }));
   };
 
   const logout = () => {
-    setAuthState({ isAuthenticated: false, token: null, role: null, name: null, balance: null });
+    setAuthState({ isAuthenticated: false, token: null, id: null, name: null, balance: null });
     localStorage.removeItem('auth');
   };
 
