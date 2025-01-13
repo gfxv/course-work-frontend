@@ -1,15 +1,33 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import axios from 'axios';
+
+import API_URL from '../../config';
 
 const RegistrationForm = () => {
+  const [error, setError] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [email, setEmail] = useState('');
   const navigate = useNavigate();
 
-  const handleRegister = () => {
-    // Simulate registration
-    navigate('/login');
+  const handleRegister = async () => {
+    try {
+      const response = await axios.post(`${API_URL}/auth/register`, {
+        username,
+        password,
+      });
+
+      if (response.data.status === 'success') {
+        navigate('/login');
+      } else if (response.data.status === 'failed' || response.user === null) {
+        setError(response.data.message);
+      } else {
+        setError("Unexpected error occurred ");
+      }
+    } catch (err) {
+      setError('An error occurred during registration');
+      console.error(err);
+    }
   };
 
   return (
@@ -22,13 +40,13 @@ const RegistrationForm = () => {
         onChange={(e) => setUsername(e.target.value)}
         className="border p-2 mb-4 w-full"
       />
-      <input
+      {/* <input
         type="email"
         placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         className="border p-2 mb-4 w-full"
-      />
+      /> */}
       <input
         type="password"
         placeholder="Password"
@@ -42,6 +60,11 @@ const RegistrationForm = () => {
       >
         Register
       </button>
+      {error && (
+          <div className="my-4 p-2 bg-red-100 border border-red-400 text-red-700 rounded">
+            {error}
+          </div>
+        )}
       <p className="text-center">
         Already have an account? <Link to="/login" className="text-blue-500">Login</Link>
       </p>
