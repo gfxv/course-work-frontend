@@ -21,17 +21,11 @@ const LoginForm = () => {
         });
       if (authResponse.data.status === 'success') {
         const { token, username } = authResponse.data;
-
-        console.log("Sending request to retrieve user information")
-        console.log(`Token: ${token}`);
-
-
         const userInfoResponse = await axios.get(`${API_URL}/user/get_user_info`, {
           headers: {
             "Authorization": `Bearer ${token}`,
           }
         });
-
         if (userInfoResponse.data.status.toLowerCase() === 'success') {
           const { id, balance } = userInfoResponse.data.user;
           login(token, id, username, balance);
@@ -72,7 +66,7 @@ const LoginForm = () => {
         Login
       </button>
       {error && (
-          <div className="mb-4 p-2 bg-red-100 border border-red-400 text-red-700 rounded">
+          <div className="my-4 p-2 bg-red-100 border border-red-400 text-red-700 rounded">
             {error}
           </div>
         )}

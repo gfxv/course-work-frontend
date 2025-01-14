@@ -22,7 +22,6 @@ const Lobby = () => {
   useEffect(() => {
     // Simulate fetching lobby data
     const fetchLobbyData = async () => {
-      // Simulate API call to get lobby data
       const lobbyData = {
         id: lobbyId,
         ownerId: "owner123",
