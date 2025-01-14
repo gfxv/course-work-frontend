@@ -9,9 +9,7 @@ const AccountInfoTab = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [currentName, setCurrentName] = useState("");
   const [userId, setUserId] = useState(-1);
-  const [username, setUsername] = useState("JohnDoe");
-  // const [email, setEmail] = useState("johndoe@example.com");
-  // const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
   const [gamesHosted, setGamesHosted] = useState(0);
   const [gamesPlayed, setGamesPlayed] = useState(0);
   const [gamesWon, setGamesWon] = useState(0);
@@ -20,7 +18,7 @@ const AccountInfoTab = () => {
   const [paymentMethod, setPaymentMethod] = useState("");
   const [bankCard, setBankCard] = useState("");
 
-  const { authState, login } = useContext(AuthContext);
+  const { authState, logout } = useContext(AuthContext);
   const token = authState.token;
 
   const handleTopUp = () => {
@@ -29,8 +27,16 @@ const AccountInfoTab = () => {
 
   const handleUpdateUsername = async () => {
     if (currentName === username) {
+      setIsEditing(false);
       return;
     }
+
+    if (!username) {
+      setUsername(currentName);
+      setIsEditing(false);
+      return;
+    }
+
     const data = {
       new_username: username,
     }
@@ -46,12 +52,16 @@ const AccountInfoTab = () => {
         setCurrentName(username);
         setIsEditing(false);
         setError('');
-        login(token, authState.id, username, authState.balance)
+        logout();
       } else {
         alert(response.data.message || 'Failed to update username');
+        setIsEditing(false);
+        setUsername(currentName);
       }
     } catch (err) {
       alert('An error occurred while updating the username');
+      setIsEditing(false);
+      setUsername(currentName);
       console.error(err);
     }
   };
