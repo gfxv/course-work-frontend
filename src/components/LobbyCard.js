@@ -3,7 +3,7 @@ import React from 'react';
 const LobbyCard = ({ lobby, onClick }) => {
 
   const visibilityColor = () => {
-    switch (lobby.visibility) {
+    switch (lobby.type.toLowerCase()) {
       case "public":
         return "bg-blue-400"
       case "friends-only":
@@ -23,9 +23,9 @@ const LobbyCard = ({ lobby, onClick }) => {
       className="bg-white p-4 rounded shadow-md cursor-pointer hover:shadow-lg transition-shadow duration-300"
     >
       <h2 className="text-xl font-bold">{lobby.name}</h2>
-      <p className="text-gray-600">Unique ID: {lobby.uniqueId}</p>
+      <p className="text-gray-600">Unique ID: {lobby.id}</p>
       <p className={`border w-fit mt-1 px-2 rounded-full text-sm text-white ${color}`}>
-        {lobby.visibility}
+        {lobby.type.toLowerCase()}
       </p>
     </div>
   );

@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 import Header from "../components/Header";
 import SearchBar from "../components/SearchBar";
@@ -9,13 +10,12 @@ import JoinByIdModal from "../components/JoinByIdModal";
 import LobbyDetailModal from "../components/LobbyDetailModal";
 import CreateLobbyModal from "../components/CreateLobbyModal";
 
+import API_URL from "../config";
+
 const Home = () => {
+  const [error, setError] = useState('');
   const [searchTerm, setSearchTerm] = useState("");
-  const [lobbies, setLobbies] = useState([
-    { id: 1, name: "Lobby 1", uniqueId: "abc123", visibility: "public" },
-    { id: 2, name: "Lobby 2", uniqueId: "def456", visibility: "friends-only" },
-    { id: 3, name: "Lobby 3", uniqueId: "ghi789", visibility: "private" },
-  ]);
+  const [lobbies, setLobbies] = useState([]);
   const [filteredLobbies, setFilteredLobbies] = useState(lobbies);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedLobby, setSelectedLobby] = useState(null);
@@ -42,22 +42,20 @@ const Home = () => {
 
     if (visibilityFilter === "friends-only") {
       filtered = filtered.filter(
-        (lobby) => lobby.visibility === "friends-only"
+        (lobby) => lobby.type.toLowerCase() === "friends-only"
       );
     } else if (visibilityFilter === "public") {
-      filtered = filtered.filter((lobby) => lobby.visibility === "public");
+      filtered = filtered.filter((lobby) => lobby.type.toLowerCase() === "public");
     }
 
     setFilteredLobbies(filtered);
   };
 
   const handleCreateLobby = (newLobby) => {
-    const uniqueId = `lobby-${lobbies.length + 1}`;
-    const createdLobby = { ...newLobby, uniqueId };
-    setLobbies([...lobbies, createdLobby]);
+    setLobbies([...lobbies, newLobby]);
     setFilteredLobbies(lobbies)
     setIsCreateLobbyModalOpen(false);
-    navigate(`/lobby/${uniqueId}`);
+    // navigate(`/lobby/${uniqueId}`);
   };
 
   const handleJoinLobby = (uniqueId) => {
@@ -91,11 +89,30 @@ const Home = () => {
     setIsCreateLobbyModalOpen(false);
   };
 
+  useEffect(() => {
+    const fetchLobbies = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/get_lobbies`);
+        if (response.data.status.toLowerCase() === 'success') {
+          setLobbies(response.data.lobbies);
+          setFilteredLobbies(response.data.lobbies)
+        } else {
+          setError(response.data.message || 'Failed to fetch lobbies');
+        }
+      } catch (err) {
+        setError('An error occurred while fetching lobbies');
+        console.error(err);
+      }
+    };
+    fetchLobbies();
+  }, []);
+
   return (
     <>
       <Header />
       <div className="min-h-screen bg-gray-100 p-4">
         <h1 className="text-3xl font-bold mb-4">Available Lobbies</h1>
+        {error && <p className="my-4 p-2 bg-red-100 border border-red-400 text-red-700 rounded">{error}</p>}
         <div className="flex justify-between items-center mb-4">
           <div className="flex items-center">
             <SearchBar searchTerm={searchTerm} onSearch={handleSearch} />
