@@ -1,24 +1,50 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useContext, useState } from "react";
+// import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
+import API_URL from "../config";
+import { AuthContext } from "../context/AuthContext";
 
 const CreateLobbyModal = ({ isOpen, onClose, onCreate }) => {
-  const [lobbyName, setLobbyName] = useState('');
-  const [visibility, setVisibility] = useState('public');
-  const [blindSize, setBlindSize] = useState('');
-  const [minPlayers, setMinPlayers] = useState('');
-  const [maxPlayers, setMaxPlayers] = useState('');
-  const navigate = useNavigate();
+  const [error, setError] = useState("");
+  const [lobbyName, setLobbyName] = useState("My Lobby");
+  const [visibility, setVisibility] = useState("public");
+  const [blindSize, setBlindSize] = useState(0);
+  const [minPlayers, setMinPlayers] = useState(3);
+  const [maxPlayers, setMaxPlayers] = useState(8);
+  const [tableCount, setTableCount] = useState(1);
 
-  const handleCreate = () => {
+  const { authState } = useContext(AuthContext)
+  const token = authState.token;
+  // const navigate = useNavigate();
+
+  const handleCreate = async () => {
     const newLobby = {
       name: lobbyName,
-      visibility,
-      blindSize,
-      minPlayers,
-      maxPlayers,
-    };
-    onCreate(newLobby);
-    // navigate(`/lobby/${newLobby.uniqueId}`); // Redirect to the new lobby
+      lobbyType: visibility.toUpperCase(),
+      blind: parseInt(blindSize, 10),
+      // min_players: parseInt(minPlayers, 10),
+      // max_players: parseInt(maxPlayers, 10),
+      number_of_tables: parseInt(tableCount, 10),
+      status: "ACTIVE"
+    }
+    
+    try {
+      const response = await axios.post(`${API_URL}/create_lobby`, newLobby, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          // 'Content-Type': 'application/json'
+        }
+      });
+      if (response.data.status.toLowerCase() === "success") {
+        onCreate();
+      } else {
+        setError(response.data.message || "Failed to create lobby");
+      }
+    } catch (err) {
+      setError("An error occurred while creating the lobby");
+      console.error(err);
+    }
   };
 
   if (!isOpen) return null;
@@ -44,7 +70,7 @@ const CreateLobbyModal = ({ isOpen, onClose, onCreate }) => {
             className="border p-2 w-full mt-1"
           >
             <option value="public">Public</option>
-            <option value="friends-only">Friends-Only</option>
+            {/* <option value="friends-only">Friends-Only</option> */}
             <option value="private">Private</option>
           </select>
         </div>
@@ -61,6 +87,8 @@ const CreateLobbyModal = ({ isOpen, onClose, onCreate }) => {
           <label className="block text-gray-700">Min Players</label>
           <input
             type="number"
+            min={ 3 }
+            max={ 8 }
             value={minPlayers}
             onChange={(e) => setMinPlayers(e.target.value)}
             className="border p-2 w-full mt-1"
@@ -70,11 +98,25 @@ const CreateLobbyModal = ({ isOpen, onClose, onCreate }) => {
           <label className="block text-gray-700">Max Players</label>
           <input
             type="number"
+            min={ 3 }
+            max={ 8 }
             value={maxPlayers}
             onChange={(e) => setMaxPlayers(e.target.value)}
             className="border p-2 w-full mt-1"
           />
         </div>
+        <div className="mb-4">
+          <label className="block text-gray-700">Number of Tables</label>
+          <input
+            type="number"
+            min={ 1 }
+            max={ 8 }
+            value={tableCount}
+            onChange={(e) => setTableCount(e.target.value)}
+            className="border p-2 w-full mt-1"
+          />
+        </div>
+        {error && <p className="my-4 p-2 bg-red-100 border border-red-400 text-red-700 rounded">{error}</p>}
         <div className="flex justify-end">
           <button
             onClick={handleCreate}
