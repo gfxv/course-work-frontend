@@ -10,7 +10,7 @@ import JoinByIdModal from "../components/JoinByIdModal";
 import LobbyDetailModal from "../components/LobbyDetailModal";
 import CreateLobbyModal from "../components/CreateLobbyModal";
 
-import API_URL from "../config";
+import { API_URL } from "../config";
 
 const Home = () => {
   const [error, setError] = useState('');
@@ -40,7 +40,7 @@ const Home = () => {
       lobby.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    if (visibilityFilter === "friends-only") {
+    if (visibilityFilter.toLowerCase() === "friends-only") {
       filtered = filtered.filter(
         (lobby) => lobby.type.toLowerCase() === "friends-only"
       );
@@ -104,6 +104,7 @@ const Home = () => {
         console.error(err);
       }
     };
+
     fetchLobbies();
   }, []);
 

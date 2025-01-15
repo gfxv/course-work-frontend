@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import axios from 'axios';
 
-import API_URL from '../../config';
+import { API_URL } from '../../config';
 
 const LoginForm = () => {
   const [error, setError] = useState('');
@@ -19,7 +19,7 @@ const LoginForm = () => {
           username,
           password,
         });
-      if (authResponse.data.status === 'success') {
+      if (authResponse.data.status.toLowerCase() === 'success') {
         const { token, username } = authResponse.data;
         const userInfoResponse = await axios.get(`${API_URL}/user/get_user_info`, {
           headers: {

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 
-import API_URL from '../../config';
+import { API_URL } from '../../config';
 
 const RegistrationForm = () => {
   const [error, setError] = useState('');
@@ -17,9 +17,9 @@ const RegistrationForm = () => {
         password,
       });
 
-      if (response.data.status === 'success') {
+      if (response.data.status.toLowerCase() === 'success') {
         navigate('/login');
-      } else if (response.data.status === 'failed' || response.user === null) {
+      } else if (response.data.status.toLowerCase() === 'failed' || response.user === null) {
         setError(response.data.message);
       } else {
         setError("Unexpected error occurred ");

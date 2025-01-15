@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 // import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-import API_URL from "../config";
+import { API_URL } from "../config";
 import { AuthContext } from "../context/AuthContext";
 
 const CreateLobbyModal = ({ isOpen, onClose, onCreate }) => {
@@ -23,8 +23,8 @@ const CreateLobbyModal = ({ isOpen, onClose, onCreate }) => {
       name: lobbyName,
       lobbyType: visibility.toUpperCase(),
       blind: parseInt(blindSize, 10),
-      // min_players: parseInt(minPlayers, 10),
-      // max_players: parseInt(maxPlayers, 10),
+      min_players_by_table: parseInt(minPlayers, 10),
+      max_players_by_table: parseInt(maxPlayers, 10),
       number_of_tables: parseInt(tableCount, 10),
       status: "ACTIVE"
     }
@@ -33,11 +33,10 @@ const CreateLobbyModal = ({ isOpen, onClose, onCreate }) => {
       const response = await axios.post(`${API_URL}/create_lobby`, newLobby, {
         headers: {
           'Authorization': `Bearer ${token}`,
-          // 'Content-Type': 'application/json'
         }
       });
       if (response.data.status.toLowerCase() === "success") {
-        onCreate();
+        onCreate(response.data.lobby);
       } else {
         setError(response.data.message || "Failed to create lobby");
       }
