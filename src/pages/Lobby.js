@@ -6,7 +6,7 @@ import LobbyInfo from "../components/LobbyInfo";
 import Header from "../components/Header";
 
 const Lobby = () => {
-  const { lobbyId } = useParams();
+  const { lobbyId, tableId } = useParams();
   const navigate = useNavigate();
   const [players, setPlayers] = useState([]);
   const [isOwner, setIsOwner] = useState(false);
@@ -20,8 +20,7 @@ const Lobby = () => {
   const [currentUserCards, setCurrentUserCards] = useState([]);
 
   useEffect(() => {
-    // Simulate fetching lobby data
-    const fetchLobbyData = async () => {
+    const fetchTableData = async () => {
       const lobbyData = {
         id: lobbyId,
         ownerId: "owner123",
@@ -49,7 +48,7 @@ const Lobby = () => {
       setCurrentUserCards(["A♠", "K♦"]);
     };
 
-    fetchLobbyData();
+    fetchTableData();
   }, [lobbyId]);
 
   const handleStartGame = () => {

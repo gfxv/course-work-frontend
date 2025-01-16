@@ -16,7 +16,7 @@ const AppRouter = () => {
         <Route path="/" element={<PrivateRoute><Home /></PrivateRoute>} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Registration />} />
-        <Route path="/lobby/:lobbyId" element={<PrivateRoute><Lobby/></PrivateRoute>} />
+        <Route path="/lobby/:lobbyId/:tableId" element={<PrivateRoute><Lobby/></PrivateRoute>} />
         <Route path="/account" element={<PrivateRoute><Account /></PrivateRoute>} />
         <Route path="/history/:matchId" element={<PrivateRoute><History /></PrivateRoute>} />
         <Route path="*" element={<Navigate to="/" />} />
